@@ -1,0 +1,11 @@
+# External configuration file for Finance Manager
+# Copy this file and update with your values
+
+# Path to data file
+app.data.file=data/users.json
+
+# Budget warning threshold in percentage (notification at 80%)
+app.budget.warning.threshold=80.0
+
+# Default currency
+app.currency=RUB
