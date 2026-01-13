@@ -13,37 +13,31 @@ import ru.mifi.financemanager.exception.ValidationException;
 
 /**
  * Реализация сервиса финансовых операций.
- * <p> Класс содержит основную бизнес-логику работы с финансами:
- * добавление операций, управление бюджетами, расчёт статистики.
+ *
+ * <p>Класс содержит основную бизнес-логику работы с финансами: добавление операций, управление
+ * бюджетами, расчёт статистики.
  */
 public class FinanceServiceImpl implements FinanceService {
     private final AuthService authService;
 
     private final NotificationService notificationService;
 
-    /**
-     * Создаёт сервис финансовых операций.
-     */
+    /** Создаёт сервис финансовых операций. */
     public FinanceServiceImpl(AuthService authService, NotificationService notificationService) {
         this.authService = authService;
         this.notificationService = notificationService;
     }
 
-    /**
-     * Возвращает кошелёк текущего пользователя.
-     */
+    /** Возвращает кошелёк текущего пользователя. */
     private Wallet getCurrentWallet() {
         User user =
                 authService
                         .getCurrentUser()
-                        .orElseThrow(
-                                () -> new ValidationException("Пользователь не авторизован"));
+                        .orElseThrow(() -> new ValidationException("Пользователь не авторизован"));
         return user.getWallet();
     }
 
-    /**
-     * Валидирует сумму операции.
-     */
+    /** Валидирует сумму операции. */
     private void validateAmount(BigDecimal amount) {
         if (amount == null) {
             throw new ValidationException("сумма", "не может быть пустой");
@@ -53,18 +47,14 @@ public class FinanceServiceImpl implements FinanceService {
         }
     }
 
-    /**
-     * Валидирует категорию.
-     */
+    /** Валидирует категорию. */
     private void validateCategory(String category) {
         if (category == null || category.trim().isEmpty()) {
             throw new ValidationException("категория", "не может быть пустой");
         }
     }
 
-    /**
-     * Добавляет доход в кошелёк текущего пользователя.
-     */
+    /** Добавляет доход в кошелёк текущего пользователя. */
     @Override
     public Transaction addIncome(BigDecimal amount, String category, String description) {
         // Валидация входных данных
@@ -85,9 +75,7 @@ public class FinanceServiceImpl implements FinanceService {
         return transaction;
     }
 
-    /**
-     * Добавляет расход в кошелёк текущего пользователя.
-     */
+    /** Добавляет расход в кошелёк текущего пользователя. */
     @Override
     public Transaction addExpense(BigDecimal amount, String category, String description) {
         validateAmount(amount);
@@ -114,9 +102,7 @@ public class FinanceServiceImpl implements FinanceService {
         return transaction;
     }
 
-    /**
-     * Проверяет состояние бюджета после добавления расхода и отправляет уведомления.
-     */
+    /** Проверяет состояние бюджета после добавления расхода и отправляет уведомления. */
     private void checkBudgetAndNotify(Wallet wallet, String category) {
         BigDecimal budget = wallet.getBudget(category);
 
@@ -154,9 +140,7 @@ public class FinanceServiceImpl implements FinanceService {
         return getCurrentWallet().getTransactionsByCategory(category.trim());
     }
 
-    /**
-     * Устанавливает бюджет для категории.
-     */
+    /** Устанавливает бюджет для категории. */
     @Override
     public void setBudget(String category, BigDecimal limit) {
         validateCategory(category);
@@ -164,9 +148,7 @@ public class FinanceServiceImpl implements FinanceService {
         getCurrentWallet().setBudget(category.trim(), limit);
     }
 
-    /**
-     * Удаляет бюджет для категории.
-     */
+    /** Удаляет бюджет для категории. */
     @Override
     public void removeBudget(String category) {
         validateCategory(category);
@@ -178,42 +160,32 @@ public class FinanceServiceImpl implements FinanceService {
         return getCurrentWallet().getCategoryBudgets();
     }
 
-    /**
-     * Возвращает оставшийся бюджет по категории.
-     */
+    /** Возвращает оставшийся бюджет по категории. */
     @Override
     public BigDecimal getRemainingBudget(String category) {
         validateCategory(category);
         return getCurrentWallet().getRemainingBudget(category.trim());
     }
 
-    /**
-     * Возвращает общую сумму доходов.
-     */
+    /** Возвращает общую сумму доходов. */
     @Override
     public BigDecimal getTotalIncome() {
         return getCurrentWallet().getTotalIncome();
     }
 
-    /**
-     * Возвращает общую сумму расходов.
-     */
+    /** Возвращает общую сумму расходов. */
     @Override
     public BigDecimal getTotalExpense() {
         return getCurrentWallet().getTotalExpense();
     }
 
-    /**
-     * Возвращает текущий баланс (доходы минус расходы).
-     */
+    /** Возвращает текущий баланс (доходы минус расходы). */
     @Override
     public BigDecimal getBalance() {
         return getCurrentWallet().getBalance();
     }
 
-    /**
-     * Возвращает статистику расходов по категориям.
-     */
+    /** Возвращает статистику расходов по категориям. */
     @Override
     public Map<String, BigDecimal> getExpensesByCategory() {
         Map<String, BigDecimal> result = new HashMap<>();
@@ -229,9 +201,7 @@ public class FinanceServiceImpl implements FinanceService {
         return result;
     }
 
-    /**
-     * Возвращает статистику доходов по категориям.
-     */
+    /** Возвращает статистику доходов по категориям. */
     @Override
     public Map<String, BigDecimal> getIncomesByCategory() {
         Map<String, BigDecimal> result = new HashMap<>();
@@ -247,9 +217,7 @@ public class FinanceServiceImpl implements FinanceService {
         return result;
     }
 
-    /**
-     * Вычисляет сумму расходов по нескольким категориям.
-     */
+    /** Вычисляет сумму расходов по нескольким категориям. */
     @Override
     public BigDecimal getExpenseByCategories(List<String> categories) {
         if (categories == null || categories.isEmpty()) {
@@ -276,9 +244,7 @@ public class FinanceServiceImpl implements FinanceService {
         return getCurrentWallet().getAllCategories();
     }
 
-    /**
-     * Выполняет перевод между пользователями.
-     */
+    /** Выполняет перевод между пользователями. */
     @Override
     public boolean transfer(User toUser, BigDecimal amount, String description) {
         validateAmount(amount);
@@ -290,8 +256,7 @@ public class FinanceServiceImpl implements FinanceService {
         User currentUser =
                 authService
                         .getCurrentUser()
-                        .orElseThrow(
-                                () -> new ValidationException("Пользователь не авторизован"));
+                        .orElseThrow(() -> new ValidationException("Пользователь не авторизован"));
 
         // Проверка — нельзя переводить самому себе
         if (currentUser.getLogin().equalsIgnoreCase(toUser.getLogin())) {
@@ -311,9 +276,7 @@ public class FinanceServiceImpl implements FinanceService {
 
         // Формируем описание
         String transferDescription =
-                description != null && !description.isEmpty()
-                        ? description
-                        : "Перевод средств";
+                description != null && !description.isEmpty() ? description : "Перевод средств";
 
         // Создаём расход у отправителя
         Transaction senderExpense =
@@ -332,10 +295,7 @@ public class FinanceServiceImpl implements FinanceService {
                         TransactionType.INCOME,
                         amount,
                         "Перевод",
-                        "Перевод от "
-                                + currentUser.getLogin()
-                                + ": "
-                                + transferDescription);
+                        "Перевод от " + currentUser.getLogin() + ": " + transferDescription);
         toUser.getWallet().addTransaction(receiverIncome);
 
         // Уведомляем об успешном переводе

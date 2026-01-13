@@ -6,10 +6,11 @@ import java.util.Objects;
  * Модель пользователя системы управления финансами.
  *
  * <p>Каждый пользователь имеет:
+ *
  * <ul>
- *   <li>Уникальный логин (идентификатор)</li>
- *   <li>Пароль (хранится в открытом виде для простоты — в production нужен хэш)</li>
- *   <li>Персональный кошелёк с транзакциями и бюджетами</li>
+ *   <li>Уникальный логин (идентификатор)
+ *   <li>Пароль (хранится в открытом виде для простоты — в production нужен хэш)
+ *   <li>Персональный кошелёк с транзакциями и бюджетами
  * </ul>
  */
 public class User {
@@ -20,18 +21,14 @@ public class User {
 
     private final Wallet wallet;
 
-    /**
-     * Создаёт нового пользователя с пустым кошельком.
-     */
+    /** Создаёт нового пользователя с пустым кошельком. */
     public User(String login, String password) {
         this.login = login;
         this.password = password;
         this.wallet = new Wallet();
     }
 
-    /**
-     * Конструктор для восстановления из JSON с существующим кошельком.
-     */
+    /** Конструктор для восстановления из JSON с существующим кошельком. */
     public User(String login, String password, Wallet wallet) {
         this.login = login;
         this.password = password;
@@ -50,9 +47,7 @@ public class User {
         return wallet;
     }
 
-    /**
-     * Проверяет соответствие введённого пароля.
-     */
+    /** Проверяет соответствие введённого пароля. */
     public boolean checkPassword(String inputPassword) {
         return this.password.equals(inputPassword);
     }

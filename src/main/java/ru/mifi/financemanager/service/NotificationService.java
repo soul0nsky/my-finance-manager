@@ -6,10 +6,11 @@ import java.math.BigDecimal;
  * Сервис уведомлений пользователя о финансовых событиях.
  *
  * <p>Преимущества отдельного сервиса:
+ *
  * <ul>
- *   <li>Централизованное управление форматом сообщений</li>
- *   <li>Легко заменить консольный вывод на GUI или push-уведомления</li>
- *   <li>Упрощает тестирование финансовой логики отдельно от UI</li>
+ *   <li>Централизованное управление форматом сообщений
+ *   <li>Легко заменить консольный вывод на GUI или push-уведомления
+ *   <li>Упрощает тестирование финансовой логики отдельно от UI
  * </ul>
  */
 public class NotificationService {
@@ -29,23 +30,17 @@ public class NotificationService {
     // Использовать ли цветной вывод (можно отключить для совместимости)
     private final boolean useColors;
 
-    /**
-     * Создаёт сервис уведомлений с цветным выводом.
-     */
+    /** Создаёт сервис уведомлений с цветным выводом. */
     public NotificationService() {
         this.useColors = true;
     }
 
-    /**
-     * Создаёт сервис уведомлений с настройкой цвета.
-     */
+    /** Создаёт сервис уведомлений с настройкой цвета. */
     public NotificationService(boolean useColors) {
         this.useColors = useColors;
     }
 
-    /**
-     * Уведомление о превышении бюджета по категории.
-     */
+    /** Уведомление о превышении бюджета по категории. */
     public void notifyBudgetExceeded(
             String category, BigDecimal budget, BigDecimal spent, BigDecimal overAmount) {
         String message =
@@ -56,9 +51,7 @@ public class NotificationService {
         printWarning(message);
     }
 
-    /**
-     * Предупреждение о приближении к лимиту бюджета (80%+).
-     */
+    /** Предупреждение о приближении к лимиту бюджета (80%+). */
     public void notifyBudgetWarning(
             String category, double usagePercent, BigDecimal remainingBudget) {
         String message =
@@ -69,9 +62,7 @@ public class NotificationService {
         printWarning(message);
     }
 
-    /**
-     * Уведомление об отрицательном балансе (расходы превысили доходы).
-     */
+    /** Уведомление об отрицательном балансе (расходы превысили доходы). */
     public void notifyNegativeBalance(BigDecimal balance) {
         String message =
                 String.format(
@@ -80,9 +71,7 @@ public class NotificationService {
         printError(message);
     }
 
-    /**
-     * Уведомление о нулевом или близком к нулю балансе.
-     */
+    /** Уведомление о нулевом или близком к нулю балансе. */
     public void notifyLowBalance(BigDecimal balance) {
         String message =
                 String.format(
@@ -90,9 +79,7 @@ public class NotificationService {
         printWarning(message);
     }
 
-    /**
-     * Уведомление о том, что категория не найдена.
-     */
+    /** Уведомление о том, что категория не найдена. */
     public void notifyCategoryNotFound(String category) {
         String message =
                 String.format(
@@ -100,21 +87,16 @@ public class NotificationService {
         printInfo(message);
     }
 
-    /**
-     * Уведомление об успешном переводе.
-     */
+    /** Уведомление об успешном переводе. */
     public void notifyTransferSuccess(String toLogin, BigDecimal amount) {
         String message =
                 String.format(
-                        "✅ Перевод выполнен успешно!%n"
-                                + "   Получатель: %s, Сумма: %.2f",
+                        "✅ Перевод выполнен успешно!%n" + "   Получатель: %s, Сумма: %.2f",
                         toLogin, amount);
         printSuccess(message);
     }
 
-    /**
-     * Выводит сообщение об успехе (зелёный цвет).
-     */
+    /** Выводит сообщение об успехе (зелёный цвет). */
     public void printSuccess(String message) {
         if (useColors) {
             System.out.println(GREEN + message + RESET);
@@ -123,9 +105,7 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Выводит предупреждение (жёлтый цвет).
-     */
+    /** Выводит предупреждение (жёлтый цвет). */
     public void printWarning(String message) {
         if (useColors) {
             System.out.println(YELLOW + message + RESET);
@@ -134,9 +114,7 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Выводит ошибку (красный цвет).
-     */
+    /** Выводит ошибку (красный цвет). */
     public void printError(String message) {
         if (useColors) {
             System.out.println(RED + message + RESET);
@@ -145,9 +123,7 @@ public class NotificationService {
         }
     }
 
-    /**
-     * Выводит информационное сообщение.
-     */
+    /** Выводит информационное сообщение. */
     public void printInfo(String message) {
         System.out.println(message);
     }

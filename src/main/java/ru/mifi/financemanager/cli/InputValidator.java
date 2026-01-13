@@ -6,24 +6,23 @@ import ru.mifi.financemanager.exception.ValidationException;
 /**
  * Валидатор пользовательского ввода в CLI.
  *
- * <p>ТЗ п.9: Валидация ввода — проверка форматов, чисел, пустых значений,
- * неизвестных категорий с понятными сообщениями (2 балла).
+ * <p>ТЗ п.9: Валидация ввода — проверка форматов, чисел, пустых значений, неизвестных категорий с
+ * понятными сообщениями (2 балла).
  *
- * <p>Этот класс централизует всю логику валидации ввода из консоли.
- * Выделен в отдельный класс по принципу единственной ответственности (SRP).
+ * <p>Этот класс централизует всю логику валидации ввода из консоли. Выделен в отдельный класс по
+ * принципу единственной ответственности (SRP).
  *
  * <p>Преимущества централизованной валидации:
+ *
  * <ul>
- *   <li>Единообразные сообщения об ошибках</li>
- *   <li>Легко добавлять новые проверки</li>
- *   <li>Упрощает тестирование</li>
+ *   <li>Единообразные сообщения об ошибках
+ *   <li>Легко добавлять новые проверки
+ *   <li>Упрощает тестирование
  * </ul>
  */
 public class InputValidator {
 
-    /**
-     * Валидирует и парсит выбор пункта меню.
-     */
+    /** Валидирует и парсит выбор пункта меню. */
     public int validateMenuChoice(String input, int minValue, int maxValue) {
         if (input == null || input.trim().isEmpty()) {
             throw new ValidationException("Введите номер пункта меню");
@@ -41,9 +40,7 @@ public class InputValidator {
         }
     }
 
-    /**
-     * Валидирует непустую строку (например, логин, категория).
-     */
+    /** Валидирует непустую строку (например, логин, категория). */
     public String validateNotEmpty(String input, String fieldName) {
         if (input == null || input.trim().isEmpty()) {
             throw new ValidationException(fieldName, "не может быть пустым");
@@ -58,9 +55,7 @@ public class InputValidator {
         return cleaned;
     }
 
-    /**
-     * Валидирует и парсит денежную сумму.
-     */
+    /** Валидирует и парсит денежную сумму. */
     public BigDecimal validateAmount(String input, String fieldName) {
         if (input == null || input.trim().isEmpty()) {
             throw new ValidationException(fieldName, "не может быть пустой");
@@ -82,9 +77,7 @@ public class InputValidator {
         }
     }
 
-    /**
-     * Валидирует пароль.
-     */
+    /** Валидирует пароль. */
     public String validatePassword(String input) {
         if (input == null || input.isEmpty()) {
             throw new ValidationException("пароль", "не может быть пустым");
@@ -92,9 +85,7 @@ public class InputValidator {
         return input;
     }
 
-    /**
-     * Валидирует логин пользователя.
-     */
+    /** Валидирует логин пользователя. */
     public String validateLogin(String input) {
         String login = validateNotEmpty(input, "логин");
 
@@ -110,9 +101,7 @@ public class InputValidator {
         return login;
     }
 
-    /**
-     * Валидирует категорию.
-     */
+    /** Валидирует категорию. */
     public String validateCategory(String input) {
         String category = validateNotEmpty(input, "категория");
 
@@ -123,9 +112,7 @@ public class InputValidator {
         return category;
     }
 
-    /**
-     * Валидирует описание (может быть пустым).
-     */
+    /** Валидирует описание (может быть пустым). */
     public String validateDescription(String input) {
         if (input == null) {
             return "";
@@ -140,9 +127,7 @@ public class InputValidator {
         return description;
     }
 
-    /**
-     * Валидирует подтверждение (да/нет).
-     */
+    /** Валидирует подтверждение (да/нет). */
     public boolean validateConfirmation(String input) {
         if (input == null || input.trim().isEmpty()) {
             return false;
@@ -155,9 +140,7 @@ public class InputValidator {
                 || normalized.equals("1");
     }
 
-    /**
-     * Валидирует путь к файлу.
-     */
+    /** Валидирует путь к файлу. */
     public String validateFilePath(String input) {
         return validateNotEmpty(input, "путь к файлу");
     }

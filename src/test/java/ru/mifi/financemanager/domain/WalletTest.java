@@ -3,7 +3,6 @@ package ru.mifi.financemanager.domain;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +12,8 @@ import org.junit.jupiter.api.Test;
 /**
  * Тесты для класса Wallet.
  *
- * <p>Покрываем:
- * - Добавление транзакций
- * - Расчёт баланса
- * - Работу с бюджетами
- * - Фильтрацию по категориям и периодам
+ * <p>Покрываем: - Добавление транзакций - Расчёт баланса - Работу с бюджетами - Фильтрацию по
+ * категориям и периодам
  */
 @DisplayName("Wallet — тесты кошелька")
 class WalletTest {
@@ -43,11 +39,9 @@ class WalletTest {
         @Test
         @DisplayName("Добавление дохода увеличивает баланс")
         void addIncomeShouldIncreaseBalance() {
-            Transaction income = new Transaction(
-                    TransactionType.INCOME,
-                    new BigDecimal("5000"),
-                    "Зарплата",
-                    "Аванс");
+            Transaction income =
+                    new Transaction(
+                            TransactionType.INCOME, new BigDecimal("5000"), "Зарплата", "Аванс");
 
             wallet.addTransaction(income);
 
@@ -58,11 +52,13 @@ class WalletTest {
         @Test
         @DisplayName("Добавление расхода уменьшает баланс")
         void addExpenseShouldDecreaseBalance() {
-            wallet.addTransaction(new Transaction(
-                    TransactionType.INCOME, new BigDecimal("10000"), "Зарплата", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.INCOME, new BigDecimal("10000"), "Зарплата", ""));
 
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("3000"), "Еда", "Продукты"));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.EXPENSE, new BigDecimal("3000"), "Еда", "Продукты"));
 
             assertEquals(new BigDecimal("7000"), wallet.getBalance());
         }
@@ -70,13 +66,12 @@ class WalletTest {
         @Test
         @DisplayName("Баланс может быть отрицательным")
         void balanceCanBeNegative() {
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
 
             assertEquals(new BigDecimal("-1000"), wallet.getBalance());
         }
     }
-
 
     @Nested
     @DisplayName("Статистика")
@@ -84,17 +79,19 @@ class WalletTest {
 
         @BeforeEach
         void setUpTransactions() {
-            wallet.addTransaction(new Transaction(
-                    TransactionType.INCOME, new BigDecimal("50000"), "Зарплата", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.INCOME, new BigDecimal("10000"), "Бонус", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.INCOME, new BigDecimal("50000"), "Зарплата", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.INCOME, new BigDecimal("10000"), "Бонус", ""));
 
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("5000"), "Еда", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("3000"), "Транспорт", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("2000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("5000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.EXPENSE, new BigDecimal("3000"), "Транспорт", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("2000"), "Еда", ""));
         }
 
         @Test
@@ -151,8 +148,8 @@ class WalletTest {
         @DisplayName("Оставшийся бюджет вычисляется корректно")
         void getRemainingBudgetShouldWork() {
             wallet.setBudget("Еда", new BigDecimal("10000"));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("3000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("3000"), "Еда", ""));
 
             assertEquals(new BigDecimal("7000"), wallet.getRemainingBudget("Еда"));
         }
@@ -161,8 +158,8 @@ class WalletTest {
         @DisplayName("Превышение бюджета даёт отрицательный остаток")
         void budgetExceededShouldReturnNegativeRemaining() {
             wallet.setBudget("Еда", new BigDecimal("5000"));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("7000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("7000"), "Еда", ""));
 
             assertEquals(new BigDecimal("-2000"), wallet.getRemainingBudget("Еда"));
         }
@@ -171,8 +168,8 @@ class WalletTest {
         @DisplayName("Процент использования бюджета вычисляется корректно")
         void getBudgetUsagePercentShouldWork() {
             wallet.setBudget("Еда", new BigDecimal("10000"));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("8000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("8000"), "Еда", ""));
 
             assertEquals(80.0, wallet.getBudgetUsagePercent("Еда"), 0.01);
         }
@@ -195,12 +192,13 @@ class WalletTest {
         @Test
         @DisplayName("Фильтрация по категории работает")
         void getTransactionsByCategoryShouldWork() {
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("2000"), "Транспорт", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("1500"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.EXPENSE, new BigDecimal("2000"), "Транспорт", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("1500"), "Еда", ""));
 
             List<Transaction> foodTransactions = wallet.getTransactionsByCategory("Еда");
 
@@ -210,12 +208,14 @@ class WalletTest {
         @Test
         @DisplayName("Расход по нескольким категориям считается корректно")
         void getExpenseByCategoriesShouldWork() {
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("2000"), "Транспорт", ""));
-            wallet.addTransaction(new Transaction(
-                    TransactionType.EXPENSE, new BigDecimal("3000"), "Развлечения", ""));
+            wallet.addTransaction(
+                    new Transaction(TransactionType.EXPENSE, new BigDecimal("1000"), "Еда", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.EXPENSE, new BigDecimal("2000"), "Транспорт", ""));
+            wallet.addTransaction(
+                    new Transaction(
+                            TransactionType.EXPENSE, new BigDecimal("3000"), "Развлечения", ""));
 
             BigDecimal total = wallet.getExpenseByCategories(List.of("Еда", "Транспорт"));
 

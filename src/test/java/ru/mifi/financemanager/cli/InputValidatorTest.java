@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import ru.mifi.financemanager.exception.ValidationException;
 
-/**
- * Тесты для валидатора пользовательского ввода.
- */
+/** Тесты для валидатора пользовательского ввода. */
 @DisplayName("InputValidator — тесты валидации ввода")
 class InputValidatorTest {
 
@@ -37,25 +35,31 @@ class InputValidatorTest {
         @Test
         @DisplayName("Выбор вне диапазона выбрасывает исключение")
         void menuChoiceOutOfRangeShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateMenuChoice("10", 0, 5);
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateMenuChoice("10", 0, 5);
+                    });
         }
 
         @Test
         @DisplayName("Нечисловой ввод выбрасывает исключение")
         void nonNumericMenuChoiceShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateMenuChoice("abc", 0, 5);
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateMenuChoice("abc", 0, 5);
+                    });
         }
 
         @Test
         @DisplayName("Пустой ввод выбрасывает исключение")
         void emptyMenuChoiceShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateMenuChoice("", 0, 5);
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateMenuChoice("", 0, 5);
+                    });
         }
     }
 
@@ -94,25 +98,31 @@ class InputValidatorTest {
         @Test
         @DisplayName("Ноль выбрасывает исключение")
         void zeroAmountShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateAmount("0", "сумма");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateAmount("0", "сумма");
+                    });
         }
 
         @Test
         @DisplayName("Отрицательное число выбрасывает исключение")
         void negativeAmountShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateAmount("-100", "сумма");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateAmount("-100", "сумма");
+                    });
         }
 
         @Test
         @DisplayName("Некорректный формат выбрасывает исключение")
         void invalidFormatShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateAmount("abc", "сумма");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateAmount("abc", "сумма");
+                    });
         }
     }
 
@@ -137,17 +147,21 @@ class InputValidatorTest {
         @Test
         @DisplayName("Слишком короткий логин выбрасывает исключение")
         void shortLoginShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateLogin("a");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateLogin("a");
+                    });
         }
 
         @Test
         @DisplayName("Логин со спецсимволами выбрасывает исключение")
         void loginWithSpecialCharsShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                validator.validateLogin("user@name");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        validator.validateLogin("user@name");
+                    });
         }
     }
 

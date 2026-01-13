@@ -11,9 +11,7 @@ import java.util.List;
 import ru.mifi.financemanager.domain.Transaction;
 import ru.mifi.financemanager.domain.TransactionType;
 
-/**
- * Экспорт транзакций в CSV формат.
- */
+/** Экспорт транзакций в CSV формат. */
 public class CsvExporter implements DataExporter {
 
     // Разделитель полей в CSV (точка с запятой для совместимости с Excel в RU локали)
@@ -45,9 +43,7 @@ public class CsvExporter implements DataExporter {
         }
     }
 
-    /**
-     * Форматирует транзакцию в строку CSV.
-     */
+    /** Форматирует транзакцию в строку CSV. */
     private String formatTransaction(Transaction transaction) {
         return String.join(
                 DELIMITER,
@@ -59,9 +55,7 @@ public class CsvExporter implements DataExporter {
                 escapeField(transaction.getDescription()));
     }
 
-    /**
-     * Экранирует поле CSV — оборачивает в кавычки если содержит спецсимволы.
-     */
+    /** Экранирует поле CSV — оборачивает в кавычки если содержит спецсимволы. */
     private String escapeField(String field) {
         if (field == null) {
             return "";

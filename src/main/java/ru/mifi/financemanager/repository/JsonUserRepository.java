@@ -25,7 +25,6 @@ import ru.mifi.financemanager.domain.User;
  *
  * <p>Используем Gson для сериализации/десериализации. ConcurrentHashMap обеспечивает
  * потокобезопасность при работе с несколькими пользователями.
- *
  */
 public class JsonUserRepository implements UserRepository {
 
@@ -35,9 +34,7 @@ public class JsonUserRepository implements UserRepository {
 
     private final Path dataFilePath;
 
-    /**
-     * Создаёт репозиторий с настройками из AppConfig.
-     */
+    /** Создаёт репозиторий с настройками из AppConfig. */
     public JsonUserRepository(AppConfig config) {
         this.users = new ConcurrentHashMap<>();
         this.gson = createGson();
@@ -122,17 +119,12 @@ public class JsonUserRepository implements UserRepository {
         }
     }
 
-
-    /**
-     * Возвращает количество пользователей в репозитории.
-     */
+    /** Возвращает количество пользователей в репозитории. */
     public int count() {
         return users.size();
     }
 
-    /**
-     * Очищает репозиторий.
-     */
+    /** Очищает репозиторий. */
     public void clear() {
         users.clear();
     }

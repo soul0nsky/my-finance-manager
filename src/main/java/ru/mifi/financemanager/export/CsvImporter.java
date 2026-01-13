@@ -15,9 +15,7 @@ import java.util.List;
 import ru.mifi.financemanager.domain.Transaction;
 import ru.mifi.financemanager.domain.TransactionType;
 
-/**
- * Импорт транзакций из CSV формата.
- */
+/** Импорт транзакций из CSV формата. */
 public class CsvImporter {
 
     // Разделитель полей в CSV
@@ -29,9 +27,7 @@ public class CsvImporter {
     // Альтернативный форматтер (ISO формат)
     private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    /**
-     * Результат импорта со статистикой.
-     */
+    /** Результат импорта со статистикой. */
     public static class ImportResult {
         private final List<Transaction> transactions;
         private final int totalLines;
@@ -70,9 +66,7 @@ public class CsvImporter {
         }
     }
 
-    /**
-     * Импортирует транзакции из CSV файла.
-     */
+    /** Импортирует транзакции из CSV файла. */
     public ImportResult importFromFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
 
@@ -120,9 +114,7 @@ public class CsvImporter {
         return new ImportResult(transactions, totalLines, successfulLines, errors);
     }
 
-    /**
-     * Парсит строку CSV в транзакцию.
-     */
+    /** Парсит строку CSV в транзакцию. */
     private Transaction parseLine(String line, int lineNumber) {
         String[] fields = splitCsvLine(line);
 
@@ -172,9 +164,7 @@ public class CsvImporter {
         return new Transaction(id, type, amount, category, description, dateTime);
     }
 
-    /**
-     * Разбивает строку CSV на поля с учётом кавычек.
-     */
+    /** Разбивает строку CSV на поля с учётом кавычек. */
     private String[] splitCsvLine(String line) {
         List<String> fields = new ArrayList<>();
         StringBuilder currentField = new StringBuilder();
@@ -203,9 +193,7 @@ public class CsvImporter {
         return fields.toArray(new String[0]);
     }
 
-    /**
-     * Парсит дату/время с поддержкой нескольких форматов.
-     */
+    /** Парсит дату/время с поддержкой нескольких форматов. */
     private LocalDateTime parseDateTime(String dateStr) {
         try {
             return LocalDateTime.parse(dateStr, PRIMARY_FORMATTER);
@@ -221,8 +209,7 @@ public class CsvImporter {
 
         // Пробуем формат без секунд
         try {
-            return LocalDateTime.parse(
-                    dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            return LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         } catch (DateTimeParseException ignored) {
         }
 

@@ -1,8 +1,6 @@
 package ru.mifi.financemanager.exception;
 
-/**
- * Исключение, выбрасываемое при ошибке валидации пользовательского ввода.
- */
+/** Исключение, выбрасываемое при ошибке валидации пользовательского ввода. */
 public class ValidationException extends RuntimeException {
 
     public ValidationException(String message) {

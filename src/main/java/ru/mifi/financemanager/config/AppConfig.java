@@ -11,11 +11,12 @@ import java.util.Properties;
 /**
  * Конфигурация приложения, загружаемая из properties файла.
  *
- * <p> Этот класс реализует паттерн "конфигурация как код", позволяя:
+ * <p>Этот класс реализует паттерн "конфигурация как код", позволяя:
+ *
  * <ul>
- *   <li>Хранить настройки во внешнем файле</li>
- *   <li>Переопределять параметры без перекомпиляции</li>
- *   <li>Использовать значения по умолчанию, если файл не найден</li>
+ *   <li>Хранить настройки во внешнем файле
+ *   <li>Переопределять параметры без перекомпиляции
+ *   <li>Использовать значения по умолчанию, если файл не найден
  * </ul>
  */
 public class AppConfig {
@@ -36,8 +37,8 @@ public class AppConfig {
     private String appVersion;
 
     /**
-     * Загружает конфигурацию из внешнего файла или classpath.
-     * Приоритет: внешний файл > classpath > значения по умолчанию.
+     * Загружает конфигурацию из внешнего файла или classpath. Приоритет: внешний файл > classpath >
+     * значения по умолчанию.
      */
     public AppConfig() {
         Properties props = new Properties();
@@ -71,9 +72,7 @@ public class AppConfig {
         initializeFromProperties(props);
     }
 
-    /**
-     * Создаёт конфигурацию с указанными значениями.
-     */
+    /** Создаёт конфигурацию с указанными значениями. */
     public AppConfig(String dataFilePath, double budgetWarningThreshold) {
         this.dataFilePath = dataFilePath;
         this.budgetWarningThreshold = budgetWarningThreshold;
@@ -82,9 +81,7 @@ public class AppConfig {
         this.appVersion = "1.0.0";
     }
 
-    /**
-     * Инициализирует поля из Properties с fallback на значения по умолчанию.
-     */
+    /** Инициализирует поля из Properties с fallback на значения по умолчанию. */
     private void initializeFromProperties(Properties props) {
         this.dataFilePath = props.getProperty("app.data.file", "data/users.json");
         this.budgetWarningThreshold =
@@ -94,44 +91,32 @@ public class AppConfig {
         this.appVersion = props.getProperty("app.version", "1.0.0");
     }
 
-    /**
-     * Возвращает путь к файлу данных пользователей.
-     */
+    /** Возвращает путь к файлу данных пользователей. */
     public String getDataFilePath() {
         return dataFilePath;
     }
 
-    /**
-     * Возвращает порог предупреждения о бюджете в процентах.
-     */
+    /** Возвращает порог предупреждения о бюджете в процентах. */
     public double getBudgetWarningThreshold() {
         return budgetWarningThreshold;
     }
 
-    /**
-     * Возвращает валюту по умолчанию.
-     */
+    /** Возвращает валюту по умолчанию. */
     public String getDefaultCurrency() {
         return defaultCurrency;
     }
 
-    /**
-     * Возвращает название приложения.
-     */
+    /** Возвращает название приложения. */
     public String getAppName() {
         return appName;
     }
 
-    /**
-     * Возвращает версию приложения.
-     */
+    /** Возвращает версию приложения. */
     public String getAppVersion() {
         return appVersion;
     }
 
-    /**
-     * Возвращает порог предупреждения как BigDecimal (для сравнения с процентами).
-     */
+    /** Возвращает порог предупреждения как BigDecimal (для сравнения с процентами). */
     public BigDecimal getBudgetWarningThresholdAsBigDecimal() {
         return BigDecimal.valueOf(budgetWarningThreshold);
     }

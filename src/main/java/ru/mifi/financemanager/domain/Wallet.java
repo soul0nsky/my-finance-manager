@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
  * Кошелёк пользователя — хранит все финансовые операции и бюджеты по категориям.
  *
  * <p>Кошелёк является агрегатом, содержащим:
+ *
  * <ul>
- *   <li>Список всех транзакций (доходы и расходы)</li>
- *   <li>Карту категорий с установленными бюджетами</li>
+ *   <li>Список всех транзакций (доходы и расходы)
+ *   <li>Карту категорий с установленными бюджетами
  * </ul>
  */
 public class Wallet {
@@ -25,49 +26,37 @@ public class Wallet {
     // Бюджеты по категориям: название категории -> лимит
     private final Map<String, BigDecimal> categoryBudgets;
 
-    /**
-     * Создаёт пустой кошелёк.
-     */
+    /** Создаёт пустой кошелёк. */
     public Wallet() {
         this.transactions = new ArrayList<>();
         this.categoryBudgets = new HashMap<>();
     }
 
-    /**
-     * Добавляет транзакцию в кошелёк.
-     */
+    /** Добавляет транзакцию в кошелёк. */
     public void addTransaction(Transaction transaction) {
         transactions.add(transaction);
     }
 
-    /**
-     * Возвращает все транзакции.
-     */
+    /** Возвращает все транзакции. */
     public List<Transaction> getTransactions() {
         return new ArrayList<>(transactions);
     }
 
-    /**
-     * Возвращает транзакции за указанный период.
-     */
+    /** Возвращает транзакции за указанный период. */
     public List<Transaction> getTransactionsByPeriod(LocalDateTime from, LocalDateTime to) {
         return transactions.stream()
                 .filter(t -> !t.getCreatedAt().isBefore(from) && !t.getCreatedAt().isAfter(to))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Возвращает транзакции по указанной категории.
-     */
+    /** Возвращает транзакции по указанной категории. */
     public List<Transaction> getTransactionsByCategory(String category) {
         return transactions.stream()
                 .filter(t -> t.getCategory().equalsIgnoreCase(category))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Вычисляет общую сумму доходов.
-     */
+    /** Вычисляет общую сумму доходов. */
     public BigDecimal getTotalIncome() {
         return transactions.stream()
                 .filter(Transaction::isIncome)
@@ -75,9 +64,7 @@ public class Wallet {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Вычисляет общую сумму расходов.
-     */
+    /** Вычисляет общую сумму расходов. */
     public BigDecimal getTotalExpense() {
         return transactions.stream()
                 .filter(Transaction::isExpense)
@@ -85,16 +72,12 @@ public class Wallet {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Вычисляет текущий баланс (доходы минус расходы).
-     */
+    /** Вычисляет текущий баланс (доходы минус расходы). */
     public BigDecimal getBalance() {
         return getTotalIncome().subtract(getTotalExpense());
     }
 
-    /**
-     * Вычисляет сумму расходов по указанной категории.
-     */
+    /** Вычисляет сумму расходов по указанной категории. */
     public BigDecimal getExpenseByCategory(String category) {
         return transactions.stream()
                 .filter(Transaction::isExpense)
@@ -103,9 +86,7 @@ public class Wallet {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Вычисляет сумму доходов по указанной категории.
-     */
+    /** Вычисляет сумму доходов по указанной категории. */
     public BigDecimal getIncomeByCategory(String category) {
         return transactions.stream()
                 .filter(Transaction::isIncome)
@@ -114,9 +95,7 @@ public class Wallet {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Вычисляет сумму расходов по нескольким категориям.
-     */
+    /** Вычисляет сумму расходов по нескольким категориям. */
     public BigDecimal getExpenseByCategories(List<String> categories) {
         List<String> lowerCategories =
                 categories.stream().map(String::toLowerCase).collect(Collectors.toList());
@@ -128,37 +107,27 @@ public class Wallet {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /**
-     * Устанавливает бюджет для категории.
-     */
+    /** Устанавливает бюджет для категории. */
     public void setBudget(String category, BigDecimal limit) {
         categoryBudgets.put(category, limit);
     }
 
-    /**
-     * Удаляет бюджет для категории.
-     */
+    /** Удаляет бюджет для категории. */
     public void removeBudget(String category) {
         categoryBudgets.remove(category);
     }
 
-    /**
-     * Возвращает все установленные бюджеты.
-     */
+    /** Возвращает все установленные бюджеты. */
     public Map<String, BigDecimal> getCategoryBudgets() {
         return new HashMap<>(categoryBudgets);
     }
 
-    /**
-     * Возвращает бюджет для указанной категории.
-     */
+    /** Возвращает бюджет для указанной категории. */
     public BigDecimal getBudget(String category) {
         return categoryBudgets.get(category);
     }
 
-    /**
-     * Вычисляет оставшийся бюджет по категории.
-     */
+    /** Вычисляет оставшийся бюджет по категории. */
     public BigDecimal getRemainingBudget(String category) {
         BigDecimal budget = categoryBudgets.get(category);
         if (budget == null) {
@@ -168,9 +137,7 @@ public class Wallet {
         return budget.subtract(spent);
     }
 
-    /**
-     * Вычисляет процент использования бюджета по категории.
-     */
+    /** Вычисляет процент использования бюджета по категории. */
     public double getBudgetUsagePercent(String category) {
         BigDecimal budget = categoryBudgets.get(category);
         if (budget == null || budget.compareTo(BigDecimal.ZERO) == 0) {
@@ -181,9 +148,7 @@ public class Wallet {
         return spent.doubleValue() / budget.doubleValue() * 100;
     }
 
-    /**
-     * Возвращает список всех уникальных категорий из транзакций.
-     */
+    /** Возвращает список всех уникальных категорий из транзакций. */
     public List<String> getAllCategories() {
         return transactions.stream()
                 .map(Transaction::getCategory)
@@ -192,9 +157,7 @@ public class Wallet {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Возвращает список категорий с установленными бюджетами.
-     */
+    /** Возвращает список категорий с установленными бюджетами. */
     public List<String> getCategoriesWithBudget() {
         return new ArrayList<>(categoryBudgets.keySet());
     }

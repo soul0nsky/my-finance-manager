@@ -2,23 +2,22 @@ package ru.mifi.financemanager.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
-
 import org.junit.jupiter.api.*;
 import ru.mifi.financemanager.domain.Transaction;
 import ru.mifi.financemanager.exception.ValidationException;
 import ru.mifi.financemanager.repository.JsonUserRepository;
 import ru.mifi.financemanager.repository.UserRepository;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.io.IOException;
 
 /**
  * Тесты для сервиса финансовых операций.
  *
- * Доходы и расходы — тестируем добавление операций.
- * Категории и бюджеты — тестируем работу с бюджетами.
+ * <p>Доходы и расходы — тестируем добавление операций. Категории и бюджеты — тестируем работу с
+ * бюджетами.
  */
 @DisplayName("FinanceService — тесты финансовых операций")
 class FinanceServiceTest {
@@ -66,8 +65,8 @@ class FinanceServiceTest {
         @Test
         @DisplayName("Добавление дохода возвращает транзакцию")
         void addIncomeShouldReturnTransaction() {
-            Transaction transaction = financeService.addIncome(
-                    new BigDecimal("10000"), "Бонус", "Квартальный");
+            Transaction transaction =
+                    financeService.addIncome(new BigDecimal("10000"), "Бонус", "Квартальный");
 
             assertNotNull(transaction);
             assertTrue(transaction.isIncome());
@@ -78,25 +77,31 @@ class FinanceServiceTest {
         @Test
         @DisplayName("Добавление дохода с нулевой суммой выбрасывает исключение")
         void addIncomeWithZeroAmountShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                financeService.addIncome(BigDecimal.ZERO, "Тест", "");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        financeService.addIncome(BigDecimal.ZERO, "Тест", "");
+                    });
         }
 
         @Test
         @DisplayName("Добавление дохода с отрицательной суммой выбрасывает исключение")
         void addIncomeWithNegativeAmountShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                financeService.addIncome(new BigDecimal("-100"), "Тест", "");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        financeService.addIncome(new BigDecimal("-100"), "Тест", "");
+                    });
         }
 
         @Test
         @DisplayName("Добавление дохода с пустой категорией выбрасывает исключение")
         void addIncomeWithEmptyCategoryShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                financeService.addIncome(new BigDecimal("1000"), "", "");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        financeService.addIncome(new BigDecimal("1000"), "", "");
+                    });
         }
     }
 
@@ -202,8 +207,10 @@ class FinanceServiceTest {
     void operationsWithoutAuthShouldThrowException() {
         authService.logout();
 
-        assertThrows(ValidationException.class, () -> {
-            financeService.addIncome(new BigDecimal("100"), "Тест", "");
-        });
+        assertThrows(
+                ValidationException.class,
+                () -> {
+                    financeService.addIncome(new BigDecimal("100"), "Тест", "");
+                });
     }
 }

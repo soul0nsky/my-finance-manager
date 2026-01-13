@@ -7,20 +7,19 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-/**
- * Тесты для класса Transaction.
- */
+/** Тесты для класса Transaction. */
 @DisplayName("Transaction — тесты транзакции")
 class TransactionTest {
 
     @Test
     @DisplayName("Транзакция дохода создаётся корректно")
     void incomeTransactionShouldBeCreatedCorrectly() {
-        Transaction transaction = new Transaction(
-                TransactionType.INCOME,
-                new BigDecimal("50000"),
-                "Зарплата",
-                "Основная работа");
+        Transaction transaction =
+                new Transaction(
+                        TransactionType.INCOME,
+                        new BigDecimal("50000"),
+                        "Зарплата",
+                        "Основная работа");
 
         assertNotNull(transaction.getId());
         assertEquals(TransactionType.INCOME, transaction.getType());
@@ -35,11 +34,9 @@ class TransactionTest {
     @Test
     @DisplayName("Транзакция расхода создаётся корректно")
     void expenseTransactionShouldBeCreatedCorrectly() {
-        Transaction transaction = new Transaction(
-                TransactionType.EXPENSE,
-                new BigDecimal("1500.50"),
-                "Еда",
-                "Продукты");
+        Transaction transaction =
+                new Transaction(
+                        TransactionType.EXPENSE, new BigDecimal("1500.50"), "Еда", "Продукты");
 
         assertEquals(TransactionType.EXPENSE, transaction.getType());
         assertEquals(new BigDecimal("1500.50"), transaction.getAmount());
@@ -50,10 +47,8 @@ class TransactionTest {
     @Test
     @DisplayName("ID транзакции генерируется автоматически")
     void transactionIdShouldBeGenerated() {
-        Transaction t1 = new Transaction(
-                TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
-        Transaction t2 = new Transaction(
-                TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
+        Transaction t1 = new Transaction(TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
+        Transaction t2 = new Transaction(TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
 
         assertNotEquals(t1.getId(), t2.getId());
     }
@@ -63,8 +58,8 @@ class TransactionTest {
     void createdAtShouldBeSetAutomatically() {
         LocalDateTime before = LocalDateTime.now().minusSeconds(1);
 
-        Transaction transaction = new Transaction(
-                TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
+        Transaction transaction =
+                new Transaction(TransactionType.INCOME, new BigDecimal("100"), "Тест", "");
 
         LocalDateTime after = LocalDateTime.now().plusSeconds(1);
         assertTrue(transaction.getCreatedAt().isAfter(before));
@@ -75,10 +70,17 @@ class TransactionTest {
     @DisplayName("Транзакции с одинаковым ID равны")
     void transactionsWithSameIdShouldBeEqual() {
         LocalDateTime now = LocalDateTime.now();
-        Transaction t1 = new Transaction(
-                "abc123", TransactionType.INCOME, new BigDecimal("100"), "Тест", "", now);
-        Transaction t2 = new Transaction(
-                "abc123", TransactionType.EXPENSE, new BigDecimal("200"), "Другой", "Описание", now);
+        Transaction t1 =
+                new Transaction(
+                        "abc123", TransactionType.INCOME, new BigDecimal("100"), "Тест", "", now);
+        Transaction t2 =
+                new Transaction(
+                        "abc123",
+                        TransactionType.EXPENSE,
+                        new BigDecimal("200"),
+                        "Другой",
+                        "Описание",
+                        now);
 
         assertEquals(t1, t2);
         assertEquals(t1.hashCode(), t2.hashCode());
@@ -87,11 +89,8 @@ class TransactionTest {
     @Test
     @DisplayName("toString выводит информативную строку")
     void toStringShouldBeInformative() {
-        Transaction transaction = new Transaction(
-                TransactionType.EXPENSE,
-                new BigDecimal("1500"),
-                "Еда",
-                "Продукты");
+        Transaction transaction =
+                new Transaction(TransactionType.EXPENSE, new BigDecimal("1500"), "Еда", "Продукты");
 
         String str = transaction.toString();
         assertTrue(str.contains("Еда"));

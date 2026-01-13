@@ -27,11 +27,12 @@ import ru.mifi.financemanager.service.NotificationService;
  * Консольный интерфейс приложения управления финансами.
  *
  * <p>Этот класс реализует пользовательский интерфейс командной строки:
+ *
  * <ul>
- *   <li>Меню авторизации (вход, регистрация)</li>
- *   <li>Главное меню (операции, бюджеты, статистика)</li>
- *   <li>Обработка ввода с валидацией</li>
- *   <li>Форматированный вывод данных</li>
+ *   <li>Меню авторизации (вход, регистрация)
+ *   <li>Главное меню (операции, бюджеты, статистика)
+ *   <li>Обработка ввода с валидацией
+ *   <li>Форматированный вывод данных
  * </ul>
  *
  * <p>Применяем числовое меню для удобства пользователя и простоты валидации.
@@ -49,9 +50,7 @@ public class ConsoleApp {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-    /**
-     * Создаёт консольное приложение с необходимыми зависимостями.
-     */
+    /** Создаёт консольное приложение с необходимыми зависимостями. */
     public ConsoleApp(
             AuthService authService,
             FinanceService financeService,
@@ -64,9 +63,7 @@ public class ConsoleApp {
         this.running = true;
     }
 
-    /**
-     * Запускает главный цикл приложения.
-     */
+    /** Запускает главный цикл приложения. */
     public void run() {
         printWelcome();
 
@@ -94,9 +91,7 @@ public class ConsoleApp {
         System.out.println("╚════════════════════════════════════════════════════════════╝");
     }
 
-    /**
-     * Отображает меню авторизации.
-     */
+    /** Отображает меню авторизации. */
     private void showAuthMenu() {
         System.out.println("\n=== МЕНЮ АВТОРИЗАЦИИ ===");
         System.out.println("1. Вход в систему");
@@ -119,9 +114,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Обрабатывает вход пользователя в систему.
-     */
+    /** Обрабатывает вход пользователя в систему. */
     private void handleLogin() {
         System.out.println("\n--- Вход в систему ---");
 
@@ -143,9 +136,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Обрабатывает регистрацию нового пользователя.
-     */
+    /** Обрабатывает регистрацию нового пользователя. */
     private void handleRegister() {
         System.out.println("\n--- Регистрация ---");
 
@@ -165,9 +156,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Отображает список всех пользователей.
-     */
+    /** Отображает список всех пользователей. */
     private void handleListUsers() {
         System.out.println("\n--- Список пользователей ---");
         List<User> users = authService.getAllUsers();
@@ -182,9 +171,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Отображает главное меню для авторизованного пользователя.
-     */
+    /** Отображает главное меню для авторизованного пользователя. */
     private void showMainMenu() {
         User user = authService.getCurrentUser().orElseThrow();
         System.out.println("\n=== ГЛАВНОЕ МЕНЮ [" + user.getLogin() + "] ===");
@@ -230,9 +217,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Добавляет доход.
-     */
+    /** Добавляет доход. */
     private void handleAddIncome() {
         System.out.println("\n--- Добавление дохода ---");
 
@@ -256,9 +241,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Добавляет расход.
-     */
+    /** Добавляет расход. */
     private void handleAddExpense() {
         System.out.println("\n--- Добавление расхода ---");
 
@@ -284,9 +267,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Отображает историю операций.
-     */
+    /** Отображает историю операций. */
     private void handleShowHistory() {
         System.out.println("\n--- История операций ---");
 
@@ -299,12 +280,14 @@ public class ConsoleApp {
 
         // Выводим последние 20 операций
         int showCount = Math.min(transactions.size(), 20);
-        List<Transaction> recent = transactions.subList(
-                Math.max(0, transactions.size() - showCount), transactions.size());
+        List<Transaction> recent =
+                transactions.subList(
+                        Math.max(0, transactions.size() - showCount), transactions.size());
 
         System.out.println("\nПоследние " + showCount + " операций:");
         System.out.println("-".repeat(70));
-        System.out.printf("%-10s %-8s %12s %-15s %s%n", "Дата", "Тип", "Сумма", "Категория", "Описание");
+        System.out.printf(
+                "%-10s %-8s %12s %-15s %s%n", "Дата", "Тип", "Сумма", "Категория", "Описание");
         System.out.println("-".repeat(70));
 
         for (Transaction t : recent) {
@@ -321,9 +304,7 @@ public class ConsoleApp {
         System.out.println("Всего операций: " + transactions.size());
     }
 
-    /**
-     * Устанавливает бюджет для категории.
-     */
+    /** Устанавливает бюджет для категории. */
     private void handleSetBudget() {
         System.out.println("\n--- Установка бюджета ---");
 
@@ -339,8 +320,11 @@ public class ConsoleApp {
             BigDecimal currentBudget = financeService.getAllBudgets().get(category);
             if (currentBudget != null) {
                 BigDecimal remaining = financeService.getRemainingBudget(category);
-                System.out.println("Текущий бюджет: " + formatMoney(currentBudget)
-                        + ", осталось: " + formatMoney(remaining));
+                System.out.println(
+                        "Текущий бюджет: "
+                                + formatMoney(currentBudget)
+                                + ", осталось: "
+                                + formatMoney(remaining));
             }
 
             System.out.print("Новый лимит бюджета (0 для удаления): ");
@@ -353,8 +337,11 @@ public class ConsoleApp {
             } else {
                 BigDecimal limit = validator.validateAmount(input, "бюджет");
                 financeService.setBudget(category, limit);
-                System.out.println("✅ Бюджет для категории '" + category
-                        + "' установлен: " + formatMoney(limit));
+                System.out.println(
+                        "✅ Бюджет для категории '"
+                                + category
+                                + "' установлен: "
+                                + formatMoney(limit));
             }
 
         } catch (ValidationException e) {
@@ -362,9 +349,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Отображает все установленные бюджеты.
-     */
+    /** Отображает все установленные бюджеты. */
     private void handleShowBudgets() {
         System.out.println("\n--- Бюджеты по категориям ---");
 
@@ -383,7 +368,8 @@ public class ConsoleApp {
         for (Map.Entry<String, BigDecimal> entry : budgets.entrySet()) {
             String category = entry.getKey();
             BigDecimal budget = entry.getValue();
-            BigDecimal spent = financeService.getExpensesByCategory().getOrDefault(category, BigDecimal.ZERO);
+            BigDecimal spent =
+                    financeService.getExpensesByCategory().getOrDefault(category, BigDecimal.ZERO);
             BigDecimal remaining = budget.subtract(spent);
 
             String status = "";
@@ -408,10 +394,7 @@ public class ConsoleApp {
         System.out.println("-".repeat(60));
     }
 
-
-    /**
-     * Отображает общую статистику.
-     */
+    /** Отображает общую статистику. */
     private void handleShowStatistics() {
         System.out.println("\n=== ФИНАНСОВАЯ СТАТИСТИКА ===");
 
@@ -448,9 +431,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Статистика по выбранным категориям.
-     */
+    /** Статистика по выбранным категориям. */
     private void handleStatsByCategories() {
         System.out.println("\n--- Статистика по категориям ---");
 
@@ -466,10 +447,11 @@ public class ConsoleApp {
         try {
             String input = validator.validateNotEmpty(scanner.nextLine(), "категории");
 
-            List<String> categories = Arrays.stream(input.split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .collect(Collectors.toList());
+            List<String> categories =
+                    Arrays.stream(input.split(","))
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .collect(Collectors.toList());
 
             if (categories.isEmpty()) {
                 throw new ValidationException("Не указаны категории");
@@ -493,9 +475,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Статистика за период.
-     */
+    /** Статистика за период. */
     private void handleStatsByPeriod() {
         System.out.println("\n--- Статистика за период ---");
 
@@ -520,15 +500,17 @@ public class ConsoleApp {
                 return;
             }
 
-            BigDecimal periodIncome = transactions.stream()
-                    .filter(Transaction::isIncome)
-                    .map(Transaction::getAmount)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal periodIncome =
+                    transactions.stream()
+                            .filter(Transaction::isIncome)
+                            .map(Transaction::getAmount)
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            BigDecimal periodExpense = transactions.stream()
-                    .filter(Transaction::isExpense)
-                    .map(Transaction::getAmount)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal periodExpense =
+                    transactions.stream()
+                            .filter(Transaction::isExpense)
+                            .map(Transaction::getAmount)
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             System.out.println("\n--- Результат ---");
             System.out.println("Период: " + formatDate(fromDate) + " — " + formatDate(toDate));
@@ -544,9 +526,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Перевод средств другому пользователю.
-     */
+    /** Перевод средств другому пользователю. */
     private void handleTransfer() {
         System.out.println("\n--- Перевод другому пользователю ---");
 
@@ -564,8 +544,13 @@ public class ConsoleApp {
             System.out.print("\nЛогин получателя: ");
             String toLogin = validator.validateNotEmpty(scanner.nextLine(), "логин получателя");
 
-            User toUser = authService.findUserByLogin(toLogin)
-                    .orElseThrow(() -> new ValidationException("Пользователь не найден: " + toLogin));
+            User toUser =
+                    authService
+                            .findUserByLogin(toLogin)
+                            .orElseThrow(
+                                    () ->
+                                            new ValidationException(
+                                                    "Пользователь не найден: " + toLogin));
 
             System.out.println("Ваш баланс: " + formatMoney(financeService.getBalance()));
             System.out.print("Сумма перевода: ");
@@ -574,8 +559,8 @@ public class ConsoleApp {
             System.out.print("Комментарий (необязательно): ");
             String description = validator.validateDescription(scanner.nextLine());
 
-            System.out.printf("\nПеревести %s пользователю %s? (да/нет): ",
-                    formatMoney(amount), toLogin);
+            System.out.printf(
+                    "\nПеревести %s пользователю %s? (да/нет): ", formatMoney(amount), toLogin);
             if (!validator.validateConfirmation(scanner.nextLine())) {
                 System.out.println("Перевод отменён.");
                 return;
@@ -589,9 +574,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Экспорт данных в CSV.
-     */
+    /** Экспорт данных в CSV. */
     private void handleExportCsv() {
         System.out.println("\n--- Экспорт в CSV ---");
 
@@ -602,8 +585,10 @@ public class ConsoleApp {
         }
 
         try {
-            String defaultName = "transactions_" + authService.getCurrentUser()
-                    .map(User::getLogin).orElse("export") + ".csv";
+            String defaultName =
+                    "transactions_"
+                            + authService.getCurrentUser().map(User::getLogin).orElse("export")
+                            + ".csv";
 
             System.out.print("Имя файла [" + defaultName + "]: ");
             String input = scanner.nextLine().trim();
@@ -620,9 +605,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Импорт данных из CSV.
-     */
+    /** Импорт данных из CSV. */
     private void handleImportCsv() {
         System.out.println("\n--- Импорт из CSV ---");
 
@@ -656,9 +639,7 @@ public class ConsoleApp {
         }
     }
 
-    /**
-     * Отображает справку по командам.
-     */
+    /** Отображает справку по командам. */
     private void handleHelp() {
         System.out.println("\n╔════════════════════════════════════════════════════════════╗");
         System.out.println("║                    СПРАВКА ПО КОМАНДАМ                      ║");
@@ -693,39 +674,29 @@ public class ConsoleApp {
         System.out.println("\n💡 Совет: данные сохраняются автоматически при выходе!");
     }
 
-    /**
-     * Выход из аккаунта.
-     */
+    /** Выход из аккаунта. */
     private void handleLogout() {
         authService.logout();
         System.out.println("\n✅ Вы вышли из аккаунта. Данные сохранены.");
     }
 
-    /**
-     * Форматирует денежную сумму с валютой.
-     */
+    /** Форматирует денежную сумму с валютой. */
     private String formatMoney(BigDecimal amount) {
         return String.format("%,.2f ₽", amount);
     }
 
-    /**
-     * Форматирует дату.
-     */
+    /** Форматирует дату. */
     private String formatDate(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
-    /**
-     * Парсит дату из строки.
-     */
+    /** Парсит дату из строки. */
     private LocalDate parseDate(String input) {
         String trimmed = input.trim();
         return LocalDate.parse(trimmed, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
-    /**
-     * Обрезает строку до указанной длины.
-     */
+    /** Обрезает строку до указанной длины. */
     private String truncate(String str, int maxLength) {
         if (str == null) return "";
         if (str.length() <= maxLength) return str;

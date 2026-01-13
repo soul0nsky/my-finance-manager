@@ -11,10 +11,11 @@ import ru.mifi.financemanager.repository.UserRepository;
  * Реализация сервиса аутентификации и управления пользователями.
  *
  * <p>Этот класс инкапсулирует всю логику работы с пользователями:
+ *
  * <ul>
- *   <li>Регистрация с валидацией уникальности логина</li>
- *   <li>Аутентификация с проверкой пароля</li>
- *   <li>Управление текущей сессией</li>
+ *   <li>Регистрация с валидацией уникальности логина
+ *   <li>Аутентификация с проверкой пароля
+ *   <li>Управление текущей сессией
  * </ul>
  */
 public class AuthServiceImpl implements AuthService {
@@ -23,17 +24,13 @@ public class AuthServiceImpl implements AuthService {
 
     private User currentUser;
 
-    /**
-     * Создаёт сервис аутентификации с указанным репозиторием.
-     */
+    /** Создаёт сервис аутентификации с указанным репозиторием. */
     public AuthServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.currentUser = null;
     }
 
-    /**
-     * Регистрирует нового пользователя.
-     */
+    /** Регистрирует нового пользователя. */
     @Override
     public User register(String login, String password) {
         // Валидация логина
@@ -61,9 +58,7 @@ public class AuthServiceImpl implements AuthService {
         return newUser;
     }
 
-    /**
-     * Выполняет вход пользователя в систему.
-     */
+    /** Выполняет вход пользователя в систему. */
     @Override
     public User login(String login, String password) {
         if (login == null || login.trim().isEmpty()) {
@@ -91,9 +86,7 @@ public class AuthServiceImpl implements AuthService {
         return user;
     }
 
-    /**
-     * Завершает сессию текущего пользователя.
-     */
+    /** Завершает сессию текущего пользователя. */
     @Override
     public void logout() {
         if (currentUser != null) {
@@ -113,9 +106,7 @@ public class AuthServiceImpl implements AuthService {
         return currentUser != null;
     }
 
-    /**
-     * Находит пользователя по логину для переводов.
-     */
+    /** Находит пользователя по логину для переводов. */
     @Override
     public Optional<User> findUserByLogin(String login) {
         return userRepository.findByLogin(login);
@@ -126,9 +117,7 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.findAll();
     }
 
-    /**
-     * Сохраняет все изменения в репозиторий.
-     */
+    /** Сохраняет все изменения в репозиторий. */
     @Override
     public void saveAll() {
         if (currentUser != null) {

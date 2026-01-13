@@ -2,24 +2,24 @@ package ru.mifi.financemanager.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterAll;
 import ru.mifi.financemanager.domain.User;
 import ru.mifi.financemanager.exception.InvalidCredentialsException;
 import ru.mifi.financemanager.exception.ValidationException;
 import ru.mifi.financemanager.repository.JsonUserRepository;
 import ru.mifi.financemanager.repository.UserRepository;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.io.IOException;
 
 /**
  * Тесты для сервиса аутентификации.
  *
- * Авторизация пользователей — тестируем вход, регистрацию.
+ * <p>Авторизация пользователей — тестируем вход, регистрацию.
  */
 @DisplayName("AuthService — тесты аутентификации")
 class AuthServiceTest {
@@ -63,25 +63,31 @@ class AuthServiceTest {
         void registerWithExistingLoginShouldThrowException() {
             authService.register("existinguser", "pass1");
 
-            assertThrows(ValidationException.class, () -> {
-                authService.register("existinguser", "pass2");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        authService.register("existinguser", "pass2");
+                    });
         }
 
         @Test
         @DisplayName("Регистрация с пустым логином выбрасывает исключение")
         void registerWithEmptyLoginShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                authService.register("", "password");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        authService.register("", "password");
+                    });
         }
 
         @Test
         @DisplayName("Регистрация с пустым паролем выбрасывает исключение")
         void registerWithEmptyPasswordShouldThrowException() {
-            assertThrows(ValidationException.class, () -> {
-                authService.register("user", "");
-            });
+            assertThrows(
+                    ValidationException.class,
+                    () -> {
+                        authService.register("user", "");
+                    });
         }
 
         @Test
@@ -115,17 +121,21 @@ class AuthServiceTest {
         @Test
         @DisplayName("Вход с неверным паролем выбрасывает исключение")
         void loginWithWrongPasswordShouldThrowException() {
-            assertThrows(InvalidCredentialsException.class, () -> {
-                authService.login("testuser", "wrongpassword");
-            });
+            assertThrows(
+                    InvalidCredentialsException.class,
+                    () -> {
+                        authService.login("testuser", "wrongpassword");
+                    });
         }
 
         @Test
         @DisplayName("Вход с несуществующим логином выбрасывает исключение")
         void loginWithNonExistentUserShouldThrowException() {
-            assertThrows(InvalidCredentialsException.class, () -> {
-                authService.login("nonexistent", "password");
-            });
+            assertThrows(
+                    InvalidCredentialsException.class,
+                    () -> {
+                        authService.login("nonexistent", "password");
+                    });
         }
 
         @Test

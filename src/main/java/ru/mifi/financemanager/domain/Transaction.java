@@ -8,9 +8,8 @@ import java.util.UUID;
 /**
  * Модель финансовой операции (транзакции).
  *
- * <p>Используем BigDecimal вместо double для точных финансовых расчётов.
- * Это стандарт в enterprise Java — исключает проблемы с плавающей точкой
- * (например, 0.1 + 0.2 != 0.3 в double).
+ * <p>Используем BigDecimal вместо double для точных финансовых расчётов. Это стандарт в enterprise
+ * Java — исключает проблемы с плавающей точкой (например, 0.1 + 0.2 != 0.3 в double).
  */
 public class Transaction {
 
@@ -27,10 +26,9 @@ public class Transaction {
 
     private final LocalDateTime createdAt;
 
-    /**
-     * Создаёт новую транзакцию с автоматической генерацией ID и timestamp.
-     */
-    public Transaction(TransactionType type, BigDecimal amount, String category, String description) {
+    /** Создаёт новую транзакцию с автоматической генерацией ID и timestamp. */
+    public Transaction(
+            TransactionType type, BigDecimal amount, String category, String description) {
         this.id = UUID.randomUUID().toString().substring(0, 8);
         this.type = type;
         this.amount = amount;
@@ -39,9 +37,7 @@ public class Transaction {
         this.createdAt = LocalDateTime.now();
     }
 
-    /**
-     * Конструктор для восстановления из JSON (все поля явно указаны).
-     */
+    /** Конструктор для восстановления из JSON (все поля явно указаны). */
     public Transaction(
             String id,
             TransactionType type,
@@ -56,7 +52,6 @@ public class Transaction {
         this.description = description;
         this.createdAt = createdAt;
     }
-
 
     public String getId() {
         return id;
@@ -82,16 +77,12 @@ public class Transaction {
         return createdAt;
     }
 
-    /**
-     * Проверяет, является ли транзакция доходом.
-     */
+    /** Проверяет, является ли транзакция доходом. */
     public boolean isIncome() {
         return type == TransactionType.INCOME;
     }
 
-    /**
-     * Проверяет, является ли транзакция расходом.
-     */
+    /** Проверяет, является ли транзакция расходом. */
     public boolean isExpense() {
         return type == TransactionType.EXPENSE;
     }
@@ -113,10 +104,6 @@ public class Transaction {
     public String toString() {
         return String.format(
                 "[%s] %s: %s %.2f (%s)",
-                id,
-                type == TransactionType.INCOME ? "+" : "-",
-                category,
-                amount,
-                description);
+                id, type == TransactionType.INCOME ? "+" : "-", category, amount, description);
     }
 }

@@ -6,8 +6,8 @@ import java.util.Objects;
 /**
  * Модель категории расходов/доходов с возможностью установки бюджета.
  *
- * <p>Каждая категория может иметь установленный лимит бюджета.
- * Если бюджет не установлен (null), категория используется только для группировки.
+ * <p>Каждая категория может иметь установленный лимит бюджета. Если бюджет не установлен (null),
+ * категория используется только для группировки.
  */
 public class Category {
 
@@ -15,17 +15,13 @@ public class Category {
 
     private BigDecimal budgetLimit;
 
-    /**
-     * Создаёт категорию без установленного бюджета.
-     */
+    /** Создаёт категорию без установленного бюджета. */
     public Category(String name) {
         this.name = name;
         this.budgetLimit = null;
     }
 
-    /**
-     * Создаёт категорию с установленным бюджетом.
-     */
+    /** Создаёт категорию с установленным бюджетом. */
     public Category(String name, BigDecimal budgetLimit) {
         this.name = name;
         this.budgetLimit = budgetLimit;
@@ -39,16 +35,12 @@ public class Category {
         return budgetLimit;
     }
 
-    /**
-     * Устанавливает лимит бюджета для категории.
-     */
+    /** Устанавливает лимит бюджета для категории. */
     public void setBudgetLimit(BigDecimal budgetLimit) {
         this.budgetLimit = budgetLimit;
     }
 
-    /**
-     * Проверяет, установлен ли бюджет для категории.
-     */
+    /** Проверяет, установлен ли бюджет для категории. */
     public boolean hasBudget() {
         return budgetLimit != null && budgetLimit.compareTo(BigDecimal.ZERO) > 0;
     }

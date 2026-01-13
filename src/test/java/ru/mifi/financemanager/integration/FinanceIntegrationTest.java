@@ -2,9 +2,11 @@ package ru.mifi.financemanager.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,15 +20,12 @@ import ru.mifi.financemanager.service.AuthServiceImpl;
 import ru.mifi.financemanager.service.FinanceService;
 import ru.mifi.financemanager.service.FinanceServiceImpl;
 import ru.mifi.financemanager.service.NotificationService;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.io.IOException;
 
 /**
  * Интеграционные тесты для проверки взаимодействия компонентов.
  *
- * <p>Эти тесты проверяют полные сценарии использования приложения,
- * включая взаимодействие между сервисами, репозиторием и доменными объектами.
+ * <p>Эти тесты проверяют полные сценарии использования приложения, включая взаимодействие между
+ * сервисами, репозиторием и доменными объектами.
  */
 @DisplayName("Интеграционные тесты")
 class FinanceIntegrationTest {
@@ -134,7 +133,8 @@ class FinanceIntegrationTest {
         User receiver = authService.findUserByLogin("receiver").orElseThrow();
 
         // Выполняем перевод
-        boolean success = financeService.transfer(receiver, new BigDecimal("3000"), "Возврат долга");
+        boolean success =
+                financeService.transfer(receiver, new BigDecimal("3000"), "Возврат долга");
         assertTrue(success);
 
         // Проверяем баланс отправителя
@@ -188,7 +188,8 @@ class FinanceIntegrationTest {
         UserRepository newRepository = new JsonUserRepository("test_integration.json");
         newRepository.load();
         AuthService newAuthService = new AuthServiceImpl(newRepository);
-        FinanceService newFinanceService = new FinanceServiceImpl(newAuthService, notificationService);
+        FinanceService newFinanceService =
+                new FinanceServiceImpl(newAuthService, notificationService);
 
         // Вторая сессия: проверяем что данные сохранились
         newAuthService.login("persistent", "pass");
